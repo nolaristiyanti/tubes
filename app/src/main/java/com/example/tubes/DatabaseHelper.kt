@@ -22,34 +22,26 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context,
         onCreate(db)
     }
 
-    fun getAllUser(): List<User>{
-        // array of columns to fetch
-        val columns = arrayOf(COL_ID, COL_USERNAME, COL_EMAIL, COL_PASSWORD)
-        // sorting orders
-        val sortOrder = "$COL_USERNAME ASC"
-        //val userList = ArrayList()
-        var userList: MutableList<User> = ArrayList()
+    fun readData(): MutableList<User>{
+        var list: MutableList<User> = ArrayList()
+
         val db = this.readableDatabase
-        // query the user table
-        val cursor = db.query(TABLE_NAME, //Table to query
-                columns,            //columns to return
-                null,     //columns for the WHERE clause
-                null,  //The values for the WHERE clause
-                null,      //group the rows
-                null,       //filter by row groups
-                sortOrder)         //The sort order
-        if (cursor.moveToFirst()) {
-            do {
-                val user = User(id = cursor.getString(cursor.getColumnIndex(COL_ID)).toInt(),
-                        username = cursor.getString(cursor.getColumnIndex(COL_USERNAME)),
-                        email = cursor.getString(cursor.getColumnIndex(COL_EMAIL)),
-                        password = cursor.getString(cursor.getColumnIndex(COL_PASSWORD)))
-                userList.add(user)
-            } while (cursor.moveToNext())
+        val query = "Select * from " + TABLE_NAME
+        val result = db.rawQuery(query, null)
+        if(result.moveToFirst()){
+            do{
+                var user = User()
+                user.id = result.getString(result.getColumnIndex(COL_ID)).toInt()
+                user.username = result.getString(result.getColumnIndex(COL_USERNAME))
+                user.email = result.getString(result.getColumnIndex(COL_EMAIL))
+                user.password = result.getString(result.getColumnIndex(COL_PASSWORD))
+                list.add(user)
+            } while (result.moveToNext())
         }
-        cursor.close()
+
+        result.close()
         db.close()
-        return userList
+        return  list
     }
 
     fun addUser(user: User) {
@@ -71,7 +63,7 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context,
         values.put(COL_PASSWORD, user.password)
         // updating row
         db.update(TABLE_NAME, values, "$COL_ID = ?",
-                arrayOf(user.id.toString()))
+            arrayOf(user.id.toString()))
         db.close()
     }
 
@@ -79,7 +71,7 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context,
         val db = this.writableDatabase
         // delete user record by id
         db.delete(TABLE_NAME, "$COL_ID = ?",
-                arrayOf(user.id.toString()))
+            arrayOf(user.id.toString()))
         db.close()
     }
 
@@ -98,12 +90,13 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context,
          * SELECT user_id FROM user WHERE user_email = 'jack@androidtutorialshub.com';
          */
         val cursor = db.query(TABLE_NAME, //Table to query
-                columns,        //columns to return
-                selection,      //columns for the WHERE clause
-                selectionArgs,  //The values for the WHERE clause
-                null,  //group the rows
-                null,   //filter by row groups
-                null)  //The sort order
+            columns,        //columns to return
+            selection,      //columns for the WHERE clause
+            selectionArgs,  //The values for the WHERE clause
+            null,  //group the rows
+            null,   //filter by row groups
+            null)  //The sort order
+
         val cursorCount = cursor.count
         cursor.close()
         db.close()
@@ -112,6 +105,7 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context,
         }
         return false
     }
+
 
     fun checkUser(email: String, password: String): Boolean {
         // array of columns to fetch
@@ -128,12 +122,13 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context,
          * SELECT user_id FROM user WHERE user_email = 'jack@androidtutorialshub.com' AND user_password = 'qwerty';
          */
         val cursor = db.query(TABLE_NAME, //Table to query
-                columns, //columns to return
-                selection, //columns for the WHERE clause
-                selectionArgs, //The values for the WHERE clause
-                null,  //group the rows
-                null, //filter by row groups
-                null) //The sort order
+            columns, //columns to return
+            selection, //columns for the WHERE clause
+            selectionArgs, //The values for the WHERE clause
+            null,  //group the rows
+            null, //filter by row groups
+            null) //The sort order
+
         val cursorCount = cursor.count
         cursor.close()
         db.close()
@@ -148,7 +143,7 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context,
         // Database Name
         private val DATABASE_NAME = "MyDB"
         // User table name
-        val TABLE_NAME = "user"
+        val TABLE_NAME = "User"
         // User Table Columns names
         private val COL_ID = "id"
         private val COL_USERNAME = "username"

@@ -38,16 +38,16 @@ class SignUp : AppCompatActivity() {
 
         buttonSignUp.setOnClickListener {
             if(editTextUsername.text.toString().equals("") || editTextEmail.text.toString().equals("") ||
-                    editTextPassword.text.toString().equals("") || editTextConfirmPassword.text.toString().equals("")){
+                editTextPassword.text.toString().equals("") || editTextConfirmPassword.text.toString().equals("")){
                 Toast.makeText(this, "Tidak boleh kosong", Toast.LENGTH_SHORT).show()
             }
             else {
                 if (editTextPassword.text.toString() == editTextConfirmPassword.text.toString()) {
                     if (!databaseHelper!!.checkUser(editTextEmail!!.text.toString().trim())) {
                         var user = User(
-                                username = editTextUsername!!.text.toString().trim(),
-                                email = editTextEmail!!.text.toString().trim(),
-                                password = editTextPassword!!.text.toString().trim()
+                            username = editTextUsername!!.text.toString().trim(),
+                            email = editTextEmail!!.text.toString().trim(),
+                            password = editTextPassword!!.text.toString().trim()
                         )
                         databaseHelper!!.addUser(user)
                         Toast.makeText(this, "Registrasi berhasil", Toast.LENGTH_SHORT).show()

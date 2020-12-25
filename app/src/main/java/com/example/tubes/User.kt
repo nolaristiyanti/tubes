@@ -1,3 +1,17 @@
 package com.example.tubes
 
-data class User(val id: Int = -1, val username: String, val email: String, val password: String)
+class User {
+    var id : Int = 0
+    var username : String = ""
+    var email : String = ""
+    var password : String = ""
+
+    constructor(username: String, email: String, password: String){
+        this.username = username
+        this.email = email
+        this.password = password
+    }
+
+    constructor(){
+    }
+}

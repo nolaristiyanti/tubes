@@ -9,9 +9,19 @@ import com.example.tubes.fragments.ProfileFragment
 import kotlinx.android.synthetic.main.bottom_nav_menu.*
 
 class BottomNavMenu : AppCompatActivity() {
+
+    var username: String? = ""
+    var email: String? = ""
+    var password: String? = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.bottom_nav_menu)
+
+        username = intent.getStringExtra("Username")
+        email = intent.getStringExtra("Email")
+        password = intent.getStringExtra("Password")
+        //textView16.text = "Welcome " + name
 
         val homeFragment = HomeFragment()
         val cartFragment = CartFragment()
@@ -28,9 +38,15 @@ class BottomNavMenu : AppCompatActivity() {
             true
         }
     }
+
     private fun makeCurrentFragment(fragment: Fragment) =
-            supportFragmentManager.beginTransaction().apply {
-                replace(R.id.container, fragment)
-                commit()
-            }
+        supportFragmentManager.beginTransaction().apply {
+            val bundle = Bundle()
+            bundle.putString("Username", username)
+            bundle.putString("Email", email)
+            bundle.putString("Password", password)
+            fragment.arguments = bundle
+            replace(R.id.container, fragment)
+            commit()
+        }
 }

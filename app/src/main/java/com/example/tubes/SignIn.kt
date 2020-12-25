@@ -34,7 +34,24 @@ class SignIn : AppCompatActivity() {
 
         buttonSignIn.setOnClickListener {
             if (databaseHelper!!.checkUser(editTextEmail!!.text.toString().trim { it <= ' ' }, editTextPassword!!.text.toString().trim { it <= ' ' })) {
+
+                var data = databaseHelper.readData()
+                var username: String? = ""
+                var email: String? = ""
+                var password: String? = ""
+
+                for(i in 0..data.size-1){
+                    if(editTextEmail.text.toString() == data.get(i).email)
+                    //textView8.append(data.get(i).id.toString() + " " + data.get(i).username + " " + data.get(i).email + "\n")
+                        username = data.get(i).username
+                    email = data.get(i).email
+                    password = data.get(i).password
+                }
+                //textView15.text = "Hello " +username
                 val intent = Intent(this, BottomNavMenu::class.java)
+                intent.putExtra("Username", username)
+                intent.putExtra("Email", email)
+                intent.putExtra("Password", password)
                 startActivity(intent)
             } else {
                 Toast.makeText(this, "Email/ password salah", Toast.LENGTH_SHORT).show()

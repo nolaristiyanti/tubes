@@ -1,11 +1,14 @@
 package com.example.tubes.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.tubes.LandingPage
 import com.example.tubes.R
+import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,6 +25,10 @@ class ProfileFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    var displayMessage1: String? = ""
+    var displayMessage2: String? = ""
+    var displayMessage3: String? = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -35,7 +42,21 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        val view = inflater.inflate(R.layout.fragment_profile, container, false)
+
+        val displayMessage1 = arguments?.getString("Username")
+        val displayMessage2 = arguments?.getString("Email")
+        val displayMessage3 = arguments?.getString("Password")
+        view.textView22.text = displayMessage1
+        view.textView21.text = displayMessage1
+        view.textView23.text = displayMessage2
+        view.textView24.text = displayMessage3
+
+        view.textView19.setOnClickListener {
+            val intent = Intent(context, LandingPage::class.java)
+            startActivity(intent)
+        }
+        return view
     }
 
     companion object {
