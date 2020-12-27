@@ -1,10 +1,12 @@
 package com.example.tubes.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.tubes.DetailTreatment
 import com.example.tubes.R
 import com.synnapps.carouselview.ImageListener
 import kotlinx.android.synthetic.main.fragment_home.view.*
@@ -23,8 +25,6 @@ class HomeFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
-    var displayMessage1: String? = ""
 
     var sampleImage = intArrayOf(
             R.drawable.v1,
@@ -49,10 +49,15 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         val displayMessage1 = arguments?.getString("Username")
-        view.textView16.text = "Hi, " + displayMessage1
+        view.textView16.text = "Hi, $displayMessage1"
 
         view.carouselView.pageCount = sampleImage.size
         view.carouselView.setImageListener(imageListener)
+
+        view.cardView.setOnClickListener {
+            val intent = Intent(context, DetailTreatment::class.java)
+            startActivity(intent)
+        }
 
         return view
     }

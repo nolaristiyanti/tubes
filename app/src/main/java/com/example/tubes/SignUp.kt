@@ -14,13 +14,6 @@ import kotlinx.android.synthetic.main.sign_up.*
 
 class SignUp : AppCompatActivity() {
 
-    val context = this
-    private lateinit var editTextUsername: EditText
-    private lateinit var editTextEmail: EditText
-    private lateinit var editTextPassword: EditText
-    private lateinit var editTextConfirmPassword: EditText
-    private lateinit var buttonSignUp: Button
-    private lateinit var textViewLinkSignIn : TextView
     lateinit var databaseHelper: DatabaseHelper
     lateinit var handler: Handler
 
@@ -28,35 +21,34 @@ class SignUp : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.sign_up)
 
-        editTextUsername = findViewById<EditText>(R.id.editText3)
-        editTextEmail = findViewById<EditText>(R.id.editText4)
-        editTextPassword = findViewById<EditText>(R.id.editText5)
-        editTextConfirmPassword = findViewById<EditText>(R.id.editText6)
-        buttonSignUp = findViewById<Button>(R.id.button4)
-        textViewLinkSignIn = findViewById<TextView>(R.id.textView14)
+        val editTextUsername = findViewById<EditText>(R.id.editText3)
+        val editTextEmail = findViewById<EditText>(R.id.editText4)
+        val editTextPassword = findViewById<EditText>(R.id.editText5)
+        val editTextConfirmPassword = findViewById<EditText>(R.id.editText6)
+        val buttonSignUp = findViewById<Button>(R.id.button4)
+        val textViewLinkSignIn = findViewById<TextView>(R.id.textView14)
         var databaseHelper = DatabaseHelper(this)
 
         buttonSignUp.setOnClickListener {
-            if(editTextUsername.text.toString().equals("") || editTextEmail.text.toString().equals("") ||
-                editTextPassword.text.toString().equals("") || editTextConfirmPassword.text.toString().equals("")){
+            if(editTextUsername.text.toString() == "" || editTextEmail.text.toString() == "" ||
+                    editTextPassword.text.toString() == "" || editTextConfirmPassword.text.toString() == ""){
                 Toast.makeText(this, "Tidak boleh kosong", Toast.LENGTH_SHORT).show()
             }
             else {
                 if (editTextPassword.text.toString() == editTextConfirmPassword.text.toString()) {
-                    if (!databaseHelper!!.checkUser(editTextEmail!!.text.toString().trim())) {
+                    if (!databaseHelper.checkUser(editTextEmail!!.text.toString().trim())) {
                         var user = User(
-                            username = editTextUsername!!.text.toString().trim(),
-                            email = editTextEmail!!.text.toString().trim(),
-                            password = editTextPassword!!.text.toString().trim()
+                            username = editTextUsername.text.toString().trim(),
+                            email = editTextEmail.text.toString().trim(),
+                            password = editTextPassword.text.toString().trim()
                         )
-                        databaseHelper!!.addUser(user)
+                        databaseHelper.addUser(user)
                         Toast.makeText(this, "Registrasi berhasil", Toast.LENGTH_SHORT).show()
 
                         handler = Handler()
                         handler.postDelayed({
 
-                            val intent = Intent(this, SignIn::class.java)
-                            startActivity(intent)
+                            startActivity(Intent(this,SignIn::class.java))
                             finish()
                         }, 1000)
                     }
@@ -71,8 +63,8 @@ class SignUp : AppCompatActivity() {
         }
 
         textViewLinkSignIn.setOnClickListener {
-            val intent = Intent(context,SignIn::class.java)
-            startActivity(intent)
+            startActivity(Intent(this,SignIn::class.java))
+            finish()
         }
     }
 }

@@ -25,10 +25,6 @@ class ProfileFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    var displayMessage1: String? = ""
-    var displayMessage2: String? = ""
-    var displayMessage3: String? = ""
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -52,10 +48,6 @@ class ProfileFragment : Fragment() {
         view.textView23.text = displayMessage2
         view.textView24.text = displayMessage3
 
-        view.textView19.setOnClickListener {
-            val intent = Intent(context, LandingPage::class.java)
-            startActivity(intent)
-        }
         return view
     }
 

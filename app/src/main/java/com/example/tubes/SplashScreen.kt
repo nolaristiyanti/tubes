@@ -8,6 +8,7 @@ import android.os.Handler
 class SplashScreen : AppCompatActivity() {
 
     lateinit var handler: Handler
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_screen)
@@ -15,8 +16,7 @@ class SplashScreen : AppCompatActivity() {
         handler = Handler()
         handler.postDelayed({
 
-            val intent = Intent(this, LandingPage::class.java)
-            startActivity(intent)
+            startActivity(Intent(this,LandingPage::class.java))
             finish()
         }, 3000)
     }
