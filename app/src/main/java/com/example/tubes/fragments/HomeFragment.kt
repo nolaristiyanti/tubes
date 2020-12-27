@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.tubes.DayCare
 import com.example.tubes.DetailTreatment
 import com.example.tubes.R
 import com.synnapps.carouselview.ImageListener
@@ -56,6 +57,11 @@ class HomeFragment : Fragment() {
 
         view.cardView.setOnClickListener {
             val intent = Intent(context, DetailTreatment::class.java)
+            startActivity(intent)
+        }
+
+        view.cardView2.setOnClickListener {
+            val intent = Intent(context, DayCare::class.java)
             startActivity(intent)
         }
 
