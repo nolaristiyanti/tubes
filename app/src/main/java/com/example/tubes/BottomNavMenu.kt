@@ -16,18 +16,30 @@ class BottomNavMenu : AppCompatActivity() {
     var username: String? = ""
     var email: String? = ""
     var password: String? = ""
+    var image: String? = ""
 
+    var email_pref: String? = ""
     lateinit var sharedPref: PreferencesHelper
+    lateinit var databaseHelper: DatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.bottom_nav_menu)
 
         sharedPref = PreferencesHelper(this)
+        databaseHelper = DatabaseHelper(this)
 
-        username = sharedPref.getString(Constant.PREF_USERNAME)
-        email = sharedPref.getString(Constant.PREF_EMAIL)
-        password = sharedPref.getString(Constant.PREF_PASSWORD)
+        email_pref = sharedPref.getString(Constant.PREF_EMAIL)
+
+        val data = databaseHelper.readData()
+        for (i in 0 until data.size) {
+            if(email_pref == data[i].email){
+                username = data[i].username
+                email = data[i].email
+                password = data[i].password
+                image = data[i].image
+            }
+        }
 
         val homeFragment = HomeFragment()
         val cartFragment = CartFragment()
@@ -57,6 +69,7 @@ class BottomNavMenu : AppCompatActivity() {
             bundle.putString("Username", username)
             bundle.putString("Email", email)
             bundle.putString("Password", password)
+            bundle.putString("Image", image)
             fragment.arguments = bundle
             replace(R.id.container, fragment)
             commit()

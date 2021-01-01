@@ -22,37 +22,53 @@
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints" />
 
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="142dp"
-        android:layout_height="142sp"
+    <FrameLayout
+        android:id="@+id/FL1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:src="@drawable/account"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView20"
-        app:layout_constraintVertical_bias="0.0"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints">
+
+        <com.blogspot.atifsoftwares.circularimageview.CircularImageView
+            android:id="@+id/profileDP"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            app:c_border="true"
+            app:c_border_color="@color/grey"
+            app:c_border_width="1dp" />
+
+
+        <ImageView
+            android:id="@+id/ic_camera"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom|end"
+            android:background="@drawable/tosca_circle"
+            android:padding="10dp"
+            android:src="@drawable/ic_camera" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/textView21"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5"
+        app:layout_constraintTop_toBottomOf="@+id/FL1"
         app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="70dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -160,9 +176,8 @@
 
     <LinearLayout
         android:id="@+id/bSearch2"
-        android:layout_width="133dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
         android:background="@drawable/pink_button"
         android:clickable="true"
         android:orientation="horizontal"
@@ -170,17 +185,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="30dp"
             android:adjustViewBounds="true"
             android:maxWidth="30dp"
             android:maxHeight="30dp"
-            android:layout_marginLeft="18dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_edit" />
 
@@ -189,10 +203,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="left"
-            android:textColor="@color/white"
-            android:textStyle="bold"
             android:text="Edit Profile"
-            android:textSize="15sp"/>
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

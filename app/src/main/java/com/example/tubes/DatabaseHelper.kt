@@ -9,8 +9,12 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context,
         DATABASE_NAME, null, DATABASE_VERSION) {
     override fun onCreate(db: SQLiteDatabase?) {
         val createTable = ("CREATE TABLE " + TABLE_NAME + "("
-                + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_USERNAME + " TEXT,"
-                + COL_EMAIL + " TEXT," + COL_PASSWORD + " TEXT" + ")")
+                + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COL_USERNAME + " TEXT,"
+                + COL_EMAIL + " TEXT,"
+                + COL_PASSWORD + " TEXT,"
+                + COL_IMAGE + " TEXT"
+                + ")")
         db?.execSQL(createTable)
     }
 
@@ -20,6 +24,22 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context,
         db?.execSQL(dropTable)
         // Create tables again
         onCreate(db)
+    }
+
+    fun addUser(user: User){
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(COL_USERNAME, user.username)
+        values.put(COL_EMAIL, user.email)
+        values.put(COL_PASSWORD, user.password)
+        values.put(COL_IMAGE, user.image)
+
+        //insert row, it will return record id of saved record
+        db.insert(TABLE_NAME, null, values)
+        //close db connection
+        db.close()
+        //return id of inserted record
+        //return id
     }
 
     fun readData(): MutableList<User>{
@@ -35,6 +55,7 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context,
                 user.username = result.getString(result.getColumnIndex(COL_USERNAME))
                 user.email = result.getString(result.getColumnIndex(COL_EMAIL))
                 user.password = result.getString(result.getColumnIndex(COL_PASSWORD))
+                user.image = result.getString(result.getColumnIndex(COL_IMAGE))
                 list.add(user)
             } while (result.moveToNext())
         }
@@ -44,35 +65,14 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context,
         return  list
     }
 
-    fun addUser(user: User) {
+    fun updateData(username: String, email: String, password: String, image: String) : Boolean {
         val db = this.writableDatabase
-        val values = ContentValues()
-        values.put(COL_USERNAME, user.username)
-        values.put(COL_EMAIL, user.email)
-        values.put(COL_PASSWORD, user.password)
-        // Inserting Row
-        db.insert(TABLE_NAME, null, values)
-        db.close()
-    }
-
-    fun updateUser(user: User) {
-        val db = this.writableDatabase
-        val values = ContentValues()
-        values.put(COL_USERNAME, user.username)
-        values.put(COL_EMAIL, user.email)
-        values.put(COL_PASSWORD, user.password)
-        // updating row
-        db.update(TABLE_NAME, values, "$COL_ID = ?",
-            arrayOf(user.id.toString()))
-        db.close()
-    }
-
-    fun deleteUser(user: User) {
-        val db = this.writableDatabase
-        // delete user record by id
-        db.delete(TABLE_NAME, "$COL_ID = ?",
-            arrayOf(user.id.toString()))
-        db.close()
+        val contentValues = ContentValues()
+        contentValues.put(COL_USERNAME, username)
+        contentValues.put(COL_PASSWORD, password)
+        contentValues.put(COL_IMAGE, image)
+        db.update(TABLE_NAME, contentValues, "EMAIL = ?", arrayOf(email))
+        return true
     }
 
     fun checkUser(email: String): Boolean {
@@ -90,12 +90,12 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context,
          * SELECT user_id FROM user WHERE user_email = 'jack@androidtutorialshub.com';
          */
         val cursor = db.query(TABLE_NAME, //Table to query
-            columns,        //columns to return
-            selection,      //columns for the WHERE clause
-            selectionArgs,  //The values for the WHERE clause
-            null,  //group the rows
-            null,   //filter by row groups
-            null)  //The sort order
+                columns,        //columns to return
+                selection,      //columns for the WHERE clause
+                selectionArgs,  //The values for the WHERE clause
+                null,  //group the rows
+                null,   //filter by row groups
+                null)  //The sort order
 
         val cursorCount = cursor.count
         cursor.close()
@@ -122,12 +122,12 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context,
          * SELECT user_id FROM user WHERE user_email = 'jack@androidtutorialshub.com' AND user_password = 'qwerty';
          */
         val cursor = db.query(TABLE_NAME, //Table to query
-            columns, //columns to return
-            selection, //columns for the WHERE clause
-            selectionArgs, //The values for the WHERE clause
-            null,  //group the rows
-            null, //filter by row groups
-            null) //The sort order
+                columns, //columns to return
+                selection, //columns for the WHERE clause
+                selectionArgs, //The values for the WHERE clause
+                null,  //group the rows
+                null, //filter by row groups
+                null) //The sort order
 
         val cursorCount = cursor.count
         cursor.close()
@@ -137,11 +137,19 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context,
         return false
     }
 
+    fun deleteUser(user: User) {
+        val db = this.writableDatabase
+        // delete user record by id
+        db.delete(TABLE_NAME, "$COL_ID = ?",
+            arrayOf(user.id.toString()))
+        db.close()
+    }
+
     companion object {
         // Database Version
-        private val DATABASE_VERSION = 1
+        private val DATABASE_VERSION = 2
         // Database Name
-        private val DATABASE_NAME = "MyDB"
+        private val DATABASE_NAME = "MyDBNewVersion"
         // User table name
         val TABLE_NAME = "User"
         // User Table Columns names
@@ -149,6 +157,6 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context,
         private val COL_USERNAME = "username"
         private val COL_EMAIL = "email"
         private val COL_PASSWORD = "password"
-
+        private val COL_IMAGE = "image"
     }
 }

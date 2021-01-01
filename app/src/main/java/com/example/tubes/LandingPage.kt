@@ -13,12 +13,10 @@ class LandingPage : AppCompatActivity() {
         val context = this
         button.setOnClickListener {
             startActivity(Intent(this,SignIn::class.java))
-            finish()
         }
 
         button2.setOnClickListener {
             startActivity(Intent(this,SignUp::class.java))
-            finish()
         }
 
     }

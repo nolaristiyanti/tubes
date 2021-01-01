@@ -10,5 +10,6 @@
     <color name="white">#FFFFFF</color>
     <color name="pink">#FF6584</color>
     <color name="grey">#E4E2E3</color>
+    <color name="default_dp">#A2B4C3</color>
     <color name="red">#FF0000</color>
 </resources>

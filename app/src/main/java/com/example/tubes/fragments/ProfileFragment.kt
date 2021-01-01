@@ -6,8 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.tubes.LandingPage
-import com.example.tubes.R
+import androidx.core.net.toUri
+import com.example.tubes.*
+import kotlinx.android.synthetic.main.edit_profile.*
+import kotlinx.android.synthetic.main.edit_profile.view.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -43,10 +47,25 @@ class ProfileFragment : Fragment() {
         val displayMessage1 = arguments?.getString("Username")
         val displayMessage2 = arguments?.getString("Email")
         val displayMessage3 = arguments?.getString("Password")
-        view.textView22.text = displayMessage1
+        val displayMessage4 = arguments?.getString("Image")
+
         view.textView21.text = displayMessage1
+        view.textView22.text = displayMessage1
         view.textView23.text = displayMessage2
         view.textView24.text = displayMessage3
+
+        if(displayMessage4 == ""){
+            view.profileDP.setImageResource(R.drawable.ic_dp)
+        }
+        else{
+            val uri = displayMessage4?.toUri()
+            view.profileDP.setImageURI(uri)
+        }
+
+        view.bSearch2.setOnClickListener {
+            val intent = Intent(context, EditProfile::class.java)
+            startActivity(intent)
+        }
 
         return view
     }

@@ -27,38 +27,42 @@ class SignUp : AppCompatActivity() {
         val editTextConfirmPassword = findViewById<EditText>(R.id.editText6)
         val buttonSignUp = findViewById<Button>(R.id.button4)
         val textViewLinkSignIn = findViewById<TextView>(R.id.textView14)
-        var databaseHelper = DatabaseHelper(this)
+        databaseHelper = DatabaseHelper(this)
 
         buttonSignUp.setOnClickListener {
-            if(editTextUsername.text.toString() == "" || editTextEmail.text.toString() == "" ||
-                    editTextPassword.text.toString() == "" || editTextConfirmPassword.text.toString() == ""){
+            if (editTextUsername.text.toString() == "" || editTextEmail.text.toString() == "" ||
+                    editTextPassword.text.toString() == "" || editTextConfirmPassword.text.toString() == "") {
                 Toast.makeText(this, "Tidak boleh kosong", Toast.LENGTH_SHORT).show()
             }
+
+            else if (databaseHelper.checkUser(editTextEmail.text.toString().trim())) {
+                Toast.makeText(this, "Email anda sudah terdatar", Toast.LENGTH_SHORT).show()
+            }
+
+            else if (editTextPassword.text.toString() != editTextConfirmPassword.text.toString()) {
+                Toast.makeText(this, "Password tidak sama", Toast.LENGTH_SHORT).show()
+            }
+
+            else if (editTextPassword.text.toString() == editTextConfirmPassword.text.toString()) {
+                var user = User(
+                        username = editTextUsername.text.toString().trim(),
+                        email = editTextEmail.text.toString().trim(),
+                        password = editTextPassword.text.toString().trim(),
+                        image = ""
+                )
+
+                databaseHelper.addUser(user)
+                Toast.makeText(this, "Registrasi berhasil", Toast.LENGTH_SHORT).show()
+
+                handler = Handler()
+                handler.postDelayed({
+                    startActivity(Intent(this, SignIn::class.java))
+                    finish()
+                }, 1000)
+            }
+
             else {
-                if (editTextPassword.text.toString() == editTextConfirmPassword.text.toString()) {
-                    if (!databaseHelper.checkUser(editTextEmail!!.text.toString().trim())) {
-                        var user = User(
-                            username = editTextUsername.text.toString().trim(),
-                            email = editTextEmail.text.toString().trim(),
-                            password = editTextPassword.text.toString().trim()
-                        )
-                        databaseHelper.addUser(user)
-                        Toast.makeText(this, "Registrasi berhasil", Toast.LENGTH_SHORT).show()
-
-                        handler = Handler()
-                        handler.postDelayed({
-
-                            startActivity(Intent(this,SignIn::class.java))
-                            finish()
-                        }, 1000)
-                    }
-                    else {
-                        Toast.makeText(this, "Registrasi gagal", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                else{
-                    Toast.makeText(this, "Password tidak sama", Toast.LENGTH_SHORT).show()
-                }
+                    Toast.makeText(this, "Registrasi gagal", Toast.LENGTH_SHORT).show()
             }
         }
 

@@ -31,23 +31,25 @@ class SignIn : AppCompatActivity() {
 
 
         buttonSignIn.setOnClickListener {
-            if (databaseHelper.checkUser(editTextEmail!!.text.toString().trim { it <= ' ' }, editTextPassword!!.text.toString().trim { it <= ' ' })) {
+            if (!databaseHelper.checkUser(editTextEmail.text.toString().trim())) {
+                Toast.makeText(this, "Email anda belum terdatar", Toast.LENGTH_SHORT).show()
+            }
+
+            else if (databaseHelper.checkUser(editTextEmail.text.toString().trim { it <= ' ' }, editTextPassword.text.toString().trim { it <= ' ' })) {
 
                 var data = databaseHelper.readData()
                 var username: String? = ""
                 var email: String? = ""
                 var password: String? = ""
+                var image: String? = ""
 
-                for(i in 0 until data.size){
-                    if(editTextEmail.text.toString() == data.get(i).email)
-                        username= data.get(i).username
-                        email = data.get(i).email
-                        password = data.get(i).password
+                for(i in 0 until data.size) {
+                    if (editTextEmail.text.toString() == data[i].email && editTextPassword.text.toString() == data[i].password) {
+                        email = data[i].email
+                    }
                 }
 
-                sharedPref.put(Constant.PREF_USERNAME, username)
                 sharedPref.put(Constant.PREF_EMAIL, email)
-                sharedPref.put(Constant.PREF_PASSWORD, password)
                 sharedPref.put(Constant.PREF_IS_LOGIN, true)
 
                 startActivity(Intent(this,BottomNavMenu::class.java))
