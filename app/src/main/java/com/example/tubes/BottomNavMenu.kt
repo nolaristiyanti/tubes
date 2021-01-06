@@ -20,18 +20,18 @@ class BottomNavMenu : AppCompatActivity() {
 
     var email_pref: String? = ""
     lateinit var sharedPref: PreferencesHelper
-    lateinit var databaseHelper: DatabaseHelper
+    lateinit var databaseUser: DatabaseUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.bottom_nav_menu)
 
         sharedPref = PreferencesHelper(this)
-        databaseHelper = DatabaseHelper(this)
+        databaseUser = DatabaseUser(this)
 
         email_pref = sharedPref.getString(Constant.PREF_EMAIL)
 
-        val data = databaseHelper.readData()
+        val data = databaseUser.readUser()
         for (i in 0 until data.size) {
             if(email_pref == data[i].email){
                 username = data[i].username

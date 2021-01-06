@@ -13,14 +13,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
-import com.example.tubes.helper.Constant
-import com.example.tubes.helper.PreferencesHelper
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
-import kotlinx.android.synthetic.main.edit_profile.*
+import kotlinx.android.synthetic.main.add_product.*
 
-class EditProfile : AppCompatActivity() {
+class AddProduct : AppCompatActivity() {
 
     private val CAMERA_REQUEST_CODE = 100;
     private val STORAGE_REQUEST_CODE = 101;
@@ -33,80 +30,31 @@ class EditProfile : AppCompatActivity() {
     //variables that will contain data to save in database
     private var imageUri: Uri? = null
 
-    var username: String? = ""
-    var email: String? = ""
-    var password: String? = ""
-    var image: String? = ""
-
-    var email_pref: String? = ""
-    lateinit var databaseUser: DatabaseUser
-    lateinit var sharedPref: PreferencesHelper
-    lateinit var handler: Handler
+    private lateinit var databaseProduct: DatabaseProduct
+    private lateinit var handler: Handler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.edit_profile)
+        setContentView(R.layout.add_product)
 
-        databaseUser = DatabaseUser(this)
-        sharedPref = PreferencesHelper(this)
+        databaseProduct = DatabaseProduct(this)
 
-        email_pref = sharedPref.getString(Constant.PREF_EMAIL)
-
-        val data = databaseUser.readUser()
-        for (i in 0 until data.size) {
-            if(email_pref == data[i].email){
-                username = data[i].username
-                email = data[i].email
-                password = data[i].password
-                image = data[i].image
-            }
-        }
-
-        editText13.setText(username)
-        editText14.setText(email)
-        editText15.setText(password)
-        editText16.setText(password)
-
-        if(image == ""){
-            profileDP1.setImageResource(R.drawable.ic_dp)
-        }
-        else{
-            val uri = image?.toUri()
-            profileDP1.setImageURI(uri)
-        }
-
-        button7.setOnClickListener {
-            if(editText13.text.toString() == "" || editText14.text.toString() == "" ||
-                editText15.text.toString() == "" || editText16.text.toString() == ""){
+        add_button2.setOnClickListener{
+            if(name_input.text.toString() == "" || price_input.text.toString() == "" || imageUri == null){
                 Toast.makeText(this, "Tidak boleh kosong", Toast.LENGTH_SHORT).show()
             }
-
-            else if (editText15.text.toString() != editText16.text.toString()){
-                Toast.makeText(this, "Password tidak sama", Toast.LENGTH_SHORT).show()
-            }
-
-            else if (editText15.text.toString() == editText16.text.toString()) {
-
-                if(imageUri == null){
-                    databaseUser.updateUser(editText13.text.toString().trim(), editText14.text.toString().trim(),
-                        editText15.text.toString().trim(),""+image)
-                }
-                else{
-                    databaseUser.updateUser(editText13.text.toString().trim(), editText14.text.toString().trim(),
-                        editText15.text.toString().trim(),""+imageUri)
-                }
-
-                Toast.makeText(this,"Update berhasil", Toast.LENGTH_SHORT).show()
+            else {
+                databaseProduct.addProduct(
+                    name_input.text.toString().trim { it <= ' ' },
+                    price_input.text.toString().toLong(),""+imageUri
+                )
+                Toast.makeText(this,"Produk berhasil ditambahkan", Toast.LENGTH_SHORT).show()
 
                 handler = Handler()
                 handler.postDelayed({
-                    startActivity(Intent(this, BottomNavMenu::class.java))
+                    startActivity(Intent(this, ViewProduct::class.java))
                     finish()
                 }, 1000)
-            }
-
-            else {
-                Toast.makeText(this, "Registrasi gagal", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -116,13 +64,13 @@ class EditProfile : AppCompatActivity() {
         storagePermissions = arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
         //click imageView to pick image
-        profileDP1.setOnClickListener {
+        image_input.setOnClickListener {
             //show image pick dialog
-            imagePickDialog();
+            imagePickDialog()
         }
-        ic_camera1.setOnClickListener {
+        ic_camera.setOnClickListener {
             //show image pick dialog
-            imagePickDialog();
+            imagePickDialog()
         }
     }
 
@@ -285,7 +233,7 @@ class EditProfile : AppCompatActivity() {
                     val resultUri = result.uri
                     imageUri = resultUri
                     //set image
-                    profileDP1.setImageURI(resultUri)
+                    image_input.setImageURI(resultUri)
 
 
                 }

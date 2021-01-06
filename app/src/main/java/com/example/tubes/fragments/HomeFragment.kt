@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.example.tubes.DayCare
 import com.example.tubes.DetailTreatment
 import com.example.tubes.R
+import com.example.tubes.Shop
 import com.synnapps.carouselview.ImageListener
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
@@ -62,6 +63,11 @@ class HomeFragment : Fragment() {
 
         view.cardView2.setOnClickListener {
             val intent = Intent(context, DayCare::class.java)
+            startActivity(intent)
+        }
+
+        view.cardView3.setOnClickListener {
+            val intent = Intent(context, Shop::class.java)
             startActivity(intent)
         }
 

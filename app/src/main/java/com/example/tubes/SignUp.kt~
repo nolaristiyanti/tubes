@@ -8,10 +8,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import kotlinx.android.synthetic.main.landing_page.*
+import kotlinx.android.synthetic.main.landing_page.button
+import kotlinx.android.synthetic.main.sign_up.*
 
 class SignUp : AppCompatActivity() {
 
-    lateinit var databaseUser: DatabaseUser
+    lateinit var databaseHelper: DatabaseHelper
     lateinit var handler: Handler
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +27,7 @@ class SignUp : AppCompatActivity() {
         val editTextConfirmPassword = findViewById<EditText>(R.id.editText6)
         val buttonSignUp = findViewById<Button>(R.id.button4)
         val textViewLinkSignIn = findViewById<TextView>(R.id.textView14)
-        databaseUser = DatabaseUser(this)
+        databaseHelper = DatabaseHelper(this)
 
         buttonSignUp.setOnClickListener {
             if (editTextUsername.text.toString() == "" || editTextEmail.text.toString() == "" ||
@@ -32,7 +35,7 @@ class SignUp : AppCompatActivity() {
                 Toast.makeText(this, "Tidak boleh kosong", Toast.LENGTH_SHORT).show()
             }
 
-            else if (databaseUser.checkUser(editTextEmail.text.toString().trim())) {
+            else if (databaseHelper.checkUser(editTextEmail.text.toString().trim())) {
                 Toast.makeText(this, "Email anda sudah terdatar", Toast.LENGTH_SHORT).show()
             }
 
@@ -48,7 +51,7 @@ class SignUp : AppCompatActivity() {
                         image = ""
                 )
 
-                databaseUser.addUser(user)
+                databaseHelper.addUser(user)
                 Toast.makeText(this, "Registrasi berhasil", Toast.LENGTH_SHORT).show()
 
                 handler = Handler()
